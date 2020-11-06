@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ProjectManagement.Presentation.Models.EmployeeViewModel>;
+@using static ProjectManagement.Presentation.Utils.UICommons;
+
+@{
+    ViewData["Title"] = "Сотрудники";
+}
+
+<style>
+    td {
+        align-content: center;
+    }
+</style>
+
+<h3 style="margin-bottom:20px;">Сотрудники</h3>
+
+<div class="header-with-buttons">
+    <div class="header" style="margin-bottom:15px;">
+        <h2>My Header</h2>
+    </div>
+    <a asp-controller="Employee" asp-action="Create" style="margin-bottom:15px;">Добавить нового сотрудника</a>
+</div>
+
+<table>
+    <thead>
+        <tr style=" background: #555; color: #f1f1f1; ">
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().FullName)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Email)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Role)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Projects)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+
+                <td>
+                    <a asp-controller="Employee" asp-action="Employee" asp-route-id="@employee.ID">@Html.DisplayFor(model => employee.FullName)</a>
+                </td>
+                <td>@Html.DisplayFor(model => employee.Email)</td>
+                <td>@Html.DisplayFor(model => rolePairs[employee.Role])</td>
+                <td>
+                    @if (employee.Projects == null || !employee.Projects.Any())
+                    {
+                        <p>Нет проектов</p>
+                    }
+                    else
+                    {
+                        @foreach (var project in employee.Projects)
+                        {
+                            <a asp-controller="Projects" asp-action="Project" asp-route-id="@project.ID" style="">@Html.DisplayFor(model => project.Name);</a>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

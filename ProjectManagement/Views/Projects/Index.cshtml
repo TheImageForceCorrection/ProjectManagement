@@ -1,0 +1,63 @@
+﻿@model IEnumerable<ProjectManagement.Presentation.Models.ProjectSummaryViewModel>
+
+@{
+    ViewData["Title"] = "Проекты";
+}
+
+<style>
+    td {
+        align-content:center;
+    }
+</style>
+
+<h3 style="margin-bottom:20px;">Проекты</h3>
+
+<div class="header-with-buttons">
+    <div class="header" style="margin-bottom:15px;">
+        <h2>My Header</h2>
+    </div>
+    <a asp-controller="Projects" asp-action="Create" style="margin-bottom:15px;">Создать проект</a>
+</div>
+
+<table>
+    <thead>
+        <tr style=" background: #555; color: #f1f1f1; ">
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Name)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().CustomerCompanyName)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().ExecutorCompanyName)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().FinishDate)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().ProjectManagerFullName)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Priority)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var project in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Projects" asp-action="Project" asp-route-id="@project.ID">@Html.DisplayFor(model => project.Name)</a>
+                </td>
+                <td>@Html.DisplayFor(model => project.CustomerCompanyName)</td>
+                <td>@Html.DisplayFor(model => project.ExecutorCompanyName)</td>
+                <td>@Html.DisplayFor(model => project.FinishDate)</td>
+                <td>@Html.DisplayFor(model => project.ProjectManagerFullName)</td>
+                <td>@Html.DisplayFor(model => project.Priority)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    window.onscroll = function () { myFunction() };
+
+    var header = document.getElementById("myHeader");
+    var sticky = header.offsetTop;
+
+    function myFunction() {
+        if (window.pageYOffset >= sticky) {
+            header.classList.add("sticky");
+        } else {
+            header.classList.remove("sticky");
+        }
+    }
+</script>

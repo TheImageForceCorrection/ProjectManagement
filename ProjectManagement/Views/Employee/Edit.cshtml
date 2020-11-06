@@ -1,0 +1,40 @@
+﻿@model ProjectManagement.Presentation.Models.EditEmployeeViewModel;
+
+@{
+    ViewData["Title"] = "Редактирование информации о сотруднике \"" + Model.FullName + "\"";
+}
+
+<h3>Редактирование информации о сотруднике "@(Html.DisplayFor(model=>model.FullName))"</h3>
+
+@using (Html.BeginForm("Edit", "Employee", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.ID);
+
+<table>
+    <tr>
+        <td>@Html.LabelFor(model => model.Surname, Html.DisplayNameFor(model => model.Surname))</td>
+        <td>@Html.EditorFor(model => model.Surname)</td>
+        <td>@Html.ValidationMessageFor(model => model.Surname, "", new { @style = "color:red" })</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.Name, Html.DisplayNameFor(model => model.Name))</td>
+        <td>@Html.EditorFor(model => model.Name)</td>
+        <td>@Html.ValidationMessageFor(model => model.Name, "", new { @style = "color:red" })</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.Patronymic, Html.DisplayNameFor(model => model.Patronymic))</td>
+        <td>@Html.EditorFor(model => model.Patronymic)</td>
+        <td>@Html.ValidationMessageFor(model => model.Patronymic, "", new { @style = "color:red" })</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.Email, Html.DisplayNameFor(model => model.Email))</td>
+        <td>@Html.EditorFor(model => model.Email)</td>
+        <td>@Html.ValidationMessageFor(model => model.Email, "", new { @style = "color:red" })</td>
+    </tr>
+</table>
+    <div style="margin-top:15px;">
+        <input type="submit" value="Отправить" style="margin-right:15px;" />
+        <a asp-controller="Employee" asp-action="Employee" asp-route-id="@Model.ID">Вернуться к просмотру информации о сотруднике</a>
+    </div>
+}
+

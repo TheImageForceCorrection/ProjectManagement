@@ -1,0 +1,53 @@
+﻿@model ProjectManagement.Presentation.Models.CreateProjectViewModel;
+
+@{
+    ViewData["Title"] = "Создание проекта";
+}
+
+<h3 style="margin-bottom:20px;">Создание проекта</h3>
+
+@using (Html.BeginForm("Create", "Projects", FormMethod.Post))
+{
+    <table>
+        <tr>
+            <td>@Html.LabelFor(model => model.Name, Html.DisplayNameFor(model => model.Name))</td>
+            <td>@Html.EditorFor(model => model.Name)</td>
+            <td>@Html.ValidationMessageFor(model => model.Name, "", new { @style = "color:red" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.CustomerCompanyName, Html.DisplayNameFor(model => model.CustomerCompanyName))</td>
+            <td>@Html.EditorFor(model => model.CustomerCompanyName)</td>
+            <td>@Html.ValidationMessageFor(model => model.CustomerCompanyName, "", new { @style = "color:red" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.ExecutorCompanyName, Html.DisplayNameFor(model => model.ExecutorCompanyName))</td>
+            <td>@Html.EditorFor(model => model.ExecutorCompanyName)</td>
+            <td>@Html.ValidationMessageFor(model => model.ExecutorCompanyName, "", new { @style = "color:red" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.StartDate, Html.DisplayNameFor(model => model.StartDate))</td>
+            <td>@Html.EditorFor(model => model.StartDate)</td>
+            <td>@Html.ValidationMessageFor(model => model.StartDate, "", new { @style = "color:red" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.FinishDate, Html.DisplayNameFor(model => model.FinishDate))</td>
+            <td>@Html.EditorFor(model => model.FinishDate)</td>
+            <td>@Html.ValidationMessageFor(model => model.FinishDate, "", new { @style = "color:red" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.ProjectManagerId, Html.DisplayNameFor(model => model.ProjectManagerId))</td>
+            <td>@Html.DropDownListFor(model => model.ProjectManagerId, ViewBag.Managers as SelectList)</td>
+            <td>@Html.ValidationMessageFor(model => model.ProjectManagerId, "", new { @style = "color:red" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.Priority, Html.DisplayNameFor(model => model.Priority))</td>
+            <td>@Html.EditorFor(model => model.Priority)</td>
+            <td>@Html.ValidationMessageFor(model => model.Priority, "", new { @style = "color:red" })</td>
+        </tr>
+    </table>
+
+    <div style="margin-top:25px;">
+        <input type="submit" value="Добавить" style="margin-right:15px;" />
+        <a asp-controller="Projects" asp-action="Index">Вернуться к списку проектов</a>
+    </div>
+}

@@ -1,0 +1,39 @@
+﻿@model ProjectManagement.Presentation.Models.DeleteEmployeeViewModel;
+
+@{
+    ViewData["Title"] = "Удаление cотрудника \"" + Model.FullName + "\"";
+}
+
+<h3 style="margin-bottom:20px;">Удаление сотрудника "@Html.DisplayFor(model => model.FullName)"</h3>
+
+@if (Model.LinkedProjects!=null && Model.LinkedProjects.Any())
+{
+    <p style="margin-bottom:15px;">Невозможно удалить сотрудника "@Html.DisplayFor(model => model.FullName)", т.к.
+        он является руководителем следующих проектов:</p>
+    <ul>
+        @foreach(var project in Model.LinkedProjects)
+        {
+            <li>@project.Name</li>
+        }
+    </ul>
+    <p style="margin-bottom:15px;">Для его удаления выберите другого руководителя для перечисленных выше проектов.</p>
+
+}
+else
+{
+    <p style="margin-bottom:15px;">Вы уверены, что хотите удалить сотрудника "@Html.DisplayFor(model => model.FullName)"?</p>
+}
+@using (Html.BeginForm("Delete", "Employee", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.ID);
+
+<div style="margin-top:15px;">
+    @if (Model.LinkedProjects == null || !Model.LinkedProjects.Any())
+    {
+        <input type="submit" value="Удалить" style="margin-right:15px;" />
+    }
+
+    <a asp-controller="Employee" asp-action="Employee" asp-route-id="@Model.ID">Вернуться к просмотру информации о сотруднике</a>
+</div>
+
+}

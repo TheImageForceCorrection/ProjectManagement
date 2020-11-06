@@ -1,0 +1,101 @@
+﻿@model ProjectManagement.Presentation.Models.ProjectDetailsViewModel;
+
+@{
+    ViewData["Title"] = "Информация о проекте \"" + Model.Name + "\"";
+    bool isFromProject = true;
+
+    void RenderEmployeeAssignment()
+    {
+        @using (Html.BeginForm("AssignOnProject", "Employee", FormMethod.Post))
+        {
+            int? employeeID = null;
+            @Html.Hidden("projectID", Model.ID);
+            @Html.HiddenFor(model => isFromProject);
+
+            <input type="submit" value="Добавить сотрудника на проект" style="margin-right:15px;" />
+
+            @Html.Label("employeeID", "Сотрудник:")
+            @Html.DropDownListFor(model => employeeID, ViewBag.Developers as SelectList)
+        }
+
+    }
+}
+
+    <h3>Информация о проекте "@(Html.DisplayFor(model=>model.Name))"</h3>
+
+    <table>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Name)</td>
+            <td>@Html.DisplayFor(model => model.Name)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.CustomerCompanyName)</td>
+            <td>@Html.DisplayFor(model => model.CustomerCompanyName)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.ExecutorCompanyName)</td>
+            <td>@Html.DisplayFor(model => model.ExecutorCompanyName)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.StartDate)</td>
+            <td>@Html.DisplayFor(model => model.StartDate)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.FinishDate)</td>
+            <td>@Html.DisplayFor(model => model.FinishDate)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.ProjectManagerFullName)</td>
+            <td>
+                <a asp-controller="Employee" asp-action="Employee" asp-route-id="@Model.ProjectManagerID">@Html.DisplayFor(model => model.ProjectManagerFullName)</a>
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Priority)</td>
+            <td>@Html.DisplayFor(model => model.Priority)</td>
+        </tr>
+    </table>
+
+    <div style="margin-top:15px;">
+        <a asp-controller="Projects" asp-action="Edit" asp-route-id="@Model.ID" style="margin-right:15px;">Редактировать</a>
+        <a asp-controller="Projects" asp-action="Delete" asp-route-id="@Model.ID" style="margin-right:15px;">Удалить</a>
+        <a asp-controller="Projects" asp-action="Index">Вернуться к списку проектов</a>
+    </div>
+
+    <h4>Сотрудники на проекте:</h4>
+
+    @if (Model.Developers == null || !Model.Developers.Any())
+    {
+        <p>На проекте пока ни одного сотрудника</p>
+
+        <ul>
+            <li>
+                @{RenderEmployeeAssignment();}
+            </li>
+
+        </ul>
+
+    }
+    else
+    {
+        <ul>
+            @foreach (var employee in Model.Developers)
+            {
+                <li>
+                    <a asp-controller="Employee" asp-action="Employee" asp-route-id="@employee.ID">@employee.FullName</a>
+                    @using (Html.BeginForm("RemoveFromProject", "Employee", FormMethod.Post))
+                    {
+                        @Html.HiddenFor(model => isFromProject);
+                        @Html.Hidden("EmployeeID", employee.ID);
+                        @Html.Hidden("ProjectID", Model.ID);
+                        <input type="submit" value="Убрать сотрудника с проекта" style="margin-right:15px;" />
+                    }
+
+                </li>
+            }
+        <li>
+            @{RenderEmployeeAssignment();}
+        </li>
+        </ul>
+    }
+

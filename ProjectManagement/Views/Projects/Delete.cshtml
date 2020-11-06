@@ -1,0 +1,19 @@
+﻿@model ProjectManagement.Presentation.Models.DeleteProjectViewModel;
+
+@{
+    ViewData["Title"] = "Удаление проекта \"" + Model.Name + "\"";
+}
+
+<h3 style="margin-bottom:20px;">Удаление проекта "@Html.DisplayFor(model => model.Name)"</h3>
+
+<p style="margin-bottom:15px;">Вы уверены, что хотите удалить проект " @Html.DisplayFor(model => model.Name) "?</p>
+
+@using (Html.BeginForm("Delete", "Projects", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.ID);
+
+    <div style="margin-top:15px;">
+        <input type="submit" value="Удалить" style="margin-right:15px;" />
+        <a asp-controller="Projects" asp-action="Project" asp-route-id="@Model.ID">Вернуться к просмотру проекта</a>
+    </div>
+}

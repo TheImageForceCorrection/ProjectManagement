@@ -1,0 +1,43 @@
+﻿@model ProjectManagement.Presentation.Models.CreateEmployeeViewModel;
+
+@{
+    ViewData["Title"] = "Добавление сотрудника";
+}
+
+<h3 style="margin-bottom:20px;">Добавление сотрудника</h3>
+
+@using (Html.BeginForm("Create", "Employee", FormMethod.Post))
+{
+<table>
+    <tr>
+        <td>@Html.LabelFor(model => model.Surname, Html.DisplayNameFor(model => model.Surname))</td>
+        <td>@Html.EditorFor(model => model.Surname)</td>
+        <td>@Html.ValidationMessageFor(model => model.Surname, "", new { @style = "color:red" })</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.Name, Html.DisplayNameFor(model => model.Name))</td>
+        <td>@Html.EditorFor(model => model.Name)</td>
+        <td>@Html.ValidationMessageFor(model => model.Name, "", new { @style = "color:red" })</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.Patronymic, Html.DisplayNameFor(model => model.Patronymic))</td>
+        <td>@Html.EditorFor(model => model.Patronymic)</td>
+        <td>@Html.ValidationMessageFor(model => model.Patronymic, "", new { @style = "color:red" })</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.Role, Html.DisplayNameFor(model => model.Role))</td>
+        <td>@Html.DropDownListFor(model => model.Role, ViewBag.Roles as SelectList)</td>
+        <td>@Html.ValidationMessageFor(model => model.Role, "", new { @style = "color:red" })</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.Email, Html.DisplayNameFor(model => model.Email))</td>
+        <td>@Html.EditorFor(model => model.Email)</td>
+        <td>@Html.ValidationMessageFor(model => model.Email, "", new { @style = "color:red" })</td>
+    </tr>
+</table>
+
+    <div style="margin-top:25px;">
+        <input type="submit" value="Добавить" style="margin-right:15px;" />
+        <a asp-controller="Employee" asp-action="Index">Вернуться к списку сотрудников</a>
+    </div>
+}

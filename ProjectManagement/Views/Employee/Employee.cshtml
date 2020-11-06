@@ -1,0 +1,105 @@
+﻿@model ProjectManagement.Presentation.Models.EmployeeDetailsViewModel;
+@using static ProjectManagement.Presentation.Utils.UICommons;
+@using ProjectManagement.Logic.Common;
+
+@{
+    ViewData["Title"] = "Информация о сотруднике \"" + Model.FullName + "\"";
+    bool isFromProject = false;
+    void RenderEmployeeAssignment()
+    {
+        @using (Html.BeginForm("AssignOnProject", "Employee", FormMethod.Post))
+        {
+            int? projectID = null;
+            Role employeeRole = Model.Role;
+            @Html.Hidden("employeeID", Model.ID);
+            @Html.HiddenFor(model => isFromProject);
+
+            <input type="submit" value="Добавить сотрудника на проект" style="margin-right:15px;" />
+
+            @Html.Label("projectID", "Проект:")
+            @Html.DropDownListFor(model => projectID, ViewBag.Projects as SelectList)
+        }
+    }
+}
+
+<h3>Информация о сотруднике "@(Html.DisplayFor(model=>model.FullName))"</h3>
+
+<table>
+    <tr>
+        <td>@Html.DisplayNameFor(model => model.Surname)</td>
+        <td>@Html.DisplayFor(model => model.Surname)</td>
+    </tr>
+    <tr>
+        <td>@Html.DisplayNameFor(model => model.Name)</td>
+        <td>@Html.DisplayFor(model => model.Name)</td>
+    </tr>
+    <tr>
+        <td>@Html.DisplayNameFor(model => model.Patronymic)</td>
+        <td>@Html.DisplayFor(model => model.Patronymic)</td>
+    </tr>
+    <tr>
+        <td>@Html.DisplayNameFor(model => model.Role)</td>
+        <td>@rolePairs[Model.Role]</td>
+    </tr>
+    <tr>
+        <td>@Html.DisplayNameFor(model => model.Email)</td>
+        <td>@Html.DisplayFor(model => model.Email)</td>
+    </tr>
+</table>
+
+<div style="margin-top:15px;">
+    <a asp-controller="Employee" asp-action="Edit" asp-route-id="@Model.ID" style="margin-right:15px;">Редактировать</a>
+    <a asp-controller="Employee" asp-action="Delete" asp-route-id="@Model.ID" style="margin-right:15px;">Удалить</a>
+    <a asp-controller="Employee" asp-action="Index">Вернуться к списку сотрудников</a>
+</div>
+
+@if (Model.Role == Role.Manager || Model.Role == Role.Developer)
+{
+    <h4>Проекты сотрудника:</h4>
+
+    if (Model.Projects == null || !Model.Projects.Any())
+    {
+        <p>У сотрудника пока ни одного проекта</p>
+        @if (Model.Role == Role.Developer)
+        {
+            <ul>
+                <li>
+                    @{RenderEmployeeAssignment();}
+                </li>
+
+            </ul>
+        }
+    }
+    else
+    {
+        <ul>
+            @foreach (var project in Model.Projects)
+            {
+                <li>
+                    <a asp-controller="Projects" asp-action="Project" asp-route-id="@project.ID">@project.Name</a>
+                    @using (Html.BeginForm("RemoveFromProject", "Employee", FormMethod.Post))
+                    {
+                        @Html.Hidden("employeeID", Model.ID);
+                        @Html.Hidden("projectID", project.ID);
+                        @Html.HiddenFor(model => isFromProject);
+
+                        if (Model.Role == Role.Developer)
+                        {
+                            <input type="submit" value="Убрать сотрудника с проекта" style="margin-right:15px;" />
+                        }
+                    }
+
+                </li>
+            }
+            @if (Model.Role == Role.Developer)
+            {
+                <li>
+                    @{RenderEmployeeAssignment();}
+                </li>
+            }
+
+        </ul>
+
+    }
+
+}
